@@ -102,3 +102,5 @@
 /home/isa-romano/isaias/pruebas/pruebasNet/ef-nortwith/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.Workspaces.resources.dll
 /home/isa-romano/isaias/pruebas/pruebasNet/ef-nortwith/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll
 /home/isa-romano/isaias/pruebas/pruebasNet/ef-nortwith/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/home/isa-romano/isaias/pruebas/pruebasNet/ef-nortwith/bin/Debug/net8.0/Dapper.dll
+/home/isa-romano/isaias/pruebas/pruebasNet/ef-nortwith/obj/Debug/net8.0/ef-nortwith.sourcelink.json

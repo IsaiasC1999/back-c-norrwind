@@ -19,10 +19,10 @@ public class RepositorioOrdenes
     }
 
 
-    public async Task<List<OrderDetail>> GetOrderDetail(int idOrder)
+    public async Task<OrderDetail> GetOrderDetail(int idOrder)
     {
 
-            return await db.OrderDetails.Include(p => p.Product).Where(or => or.OrderId == idOrder).ToListAsync();
+            return await db.OrderDetails.Include(p => p.Product).FirstOrDefaultAsync(or => or.OrderId == idOrder);
 
     }
  

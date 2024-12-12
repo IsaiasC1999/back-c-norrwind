@@ -79,17 +79,24 @@ public static class Mappers
      }
 
 
-     public static List<OrderDetailsDTO> OrderDetailEntityToOrderDetailsDTO(List<OrderDetail> orderDetails)
+     public static OrderDetailsDTO OrderDetailEntityToOrderDetailsDTO(OrderDetail orderDetails)
      {
-           var orderDetailsDTO = orderDetails.Select( or => new OrderDetailsDTO{
-                    UnitPrice = or.UnitPrice,
-                    Quantity = or.Quantity,
-                    Discount = or.Discount,
-                    ProductDTO = Mappers.ProducEntityToProductoDTO(or.Product),
+        //    var orderDetailsDTO = new OrderDetailsDTO{
+        //             UnitPrice = or.UnitPrice,
+        //             Quantity = or.Quantity,
+        //             Discount = or.Discount,
+        //             ProductDTO = Mappers.ProducEntityToProductoDTO(or.Product),
                     
-           }).ToList();
+        //    });
 
-           return orderDetailsDTO; 
+          
+
+           return new OrderDetailsDTO{
+                 Discount = orderDetails.Discount,
+                 Quantity = orderDetails.Quantity,
+                 UnitPrice = orderDetails.UnitPrice,
+                //  ProductDTO = Mappers.ProducEntityToProductoDTO(orderDetails.Product)
+           }; 
      }  
 
      

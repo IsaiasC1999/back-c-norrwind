@@ -58,7 +58,7 @@ public class OrdenesControllers : ControllerBase
 
 
     [HttpGet("/order/{idOrder}/detalle")]
-    public async Task<ActionResult<List<OrderDetailsDTO>>> GetOrderDetails(int idOrder){
+    public async Task<ActionResult<OrderDetailsDTO>> GetOrderDetails(int idOrder){
 
             var resu =  await repositorioOrdenes.GetOrderDetail(idOrder);
 
