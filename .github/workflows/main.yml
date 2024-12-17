@@ -1,0 +1,16 @@
+name: Run ls on Ubuntu
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  run-ls:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run ls command
+        run: ls -la
+      - name : Docker ps 
+        run: docker ps 
