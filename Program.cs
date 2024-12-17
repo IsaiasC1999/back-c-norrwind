@@ -18,6 +18,7 @@ builder.Services.AddDbContext<NorthwindContext>(opc =>{
 builder.Services.AddTransient<ProductsServices>();
 builder.Services.AddTransient<IRepositorioProdcutos,RepositorioProductos>();
 builder.Services.AddTransient<RepositorioOrdenes>();
+builder.Services.AddTransient<RepositorioProveedores>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

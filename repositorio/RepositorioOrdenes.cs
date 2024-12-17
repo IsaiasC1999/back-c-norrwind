@@ -22,7 +22,7 @@ public class RepositorioOrdenes
     public async Task<OrderDetail> GetOrderDetail(int idOrder)
     {
 
-            return await db.OrderDetails.Include(p => p.Product).FirstOrDefaultAsync(or => or.OrderId == idOrder);
+            return await db.OrderDetails.Include(p => p.Product).Include(e =>e.Order.Employee).FirstOrDefaultAsync(or => or.OrderId == idOrder);
 
     }
  

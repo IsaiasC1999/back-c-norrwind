@@ -21,7 +21,7 @@ public class RepositorioProductos : IRepositorioProdcutos
 
     public async Task<List<Product>> GetAllProducts()
     {
-           return await db.Products.Include(p => p.Category).Include(p => p.Category).ToListAsync();
+           return await db.Products.Include(p => p.Supplier).Include(p => p.Category).ToListAsync();
     }
     
     public async Task<Product> GetProductByID(int idProducto)
@@ -52,6 +52,12 @@ public class RepositorioProductos : IRepositorioProdcutos
    
         return result;
     }
+
+    // public async Task<List<Product>> GetListProductBySupplier(int idProveedor)
+    // {
+    //       return await db.Products.Where(p => p.SupplierId == idProveedor).ToListAsync();      
+    // }
+
 
     // public async Task<bool> UpdateProduc(Product product){
 

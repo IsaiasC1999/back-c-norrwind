@@ -3,7 +3,7 @@
 
 ### Características:
 - **Listado de órdenes:** Mostrar todas las órdenes con detalles como cliente, empleado responsable, fecha y estado del pedido. [Listo]
-- **Filtrado de órdenes:** Filtrar por fechas, clientes o estado.   => por el momento solo filtra por fecha 
+- **Filtrado de órdenes:** Filtrar por fechas, clientes o estado.   => solo falta por estado [pendiente]
 - **Detalle de la orden:** Ver todos los productos en una orden específica, incluyendo cantidad, precio y total. [Listo]
 - **Actualización del estado:** Modificar el estado de una orden (pendiente, enviada, completada).   [pendiente]
 
@@ -44,13 +44,13 @@
 
 ---
 
-# Sistema de Gestión de Proveedores
+# Sistema de Gestión de Proveedores  <-- trabajando aqui
 **Funcionalidad:** Permitir a los empleados gestionar los proveedores de la empresa, actualizando información y visualizando detalles.
 
 ### Características:
-- **Listado de proveedores:** Mostrar todos los proveedores con su información de contacto.
-- **Agregar o editar proveedores:** Formulario para agregar o modificar los datos de los proveedores.
-- **Historial de productos de proveedores:** Ver todos los productos suministrados por un proveedor específico.
+- **Listado de proveedores:** Mostrar todos los proveedores con su información de contacto. [Listo]
+- **Agregar o editar proveedores:** Formulario para agregar o modificar los datos de los proveedores. [Listo]  
+- **Historial de productos de proveedores:** Ver todos los productos suministrados por un proveedor específico. [Listo]
 
 **Tecnologías:** 
 - Backend: ASP.NET Core
@@ -63,10 +63,10 @@
 **Funcionalidad:** Un módulo para gestionar la información de los clientes, visualizando órdenes y detalles de contacto.
 
 ### Características:
-- **Listado de clientes:** Mostrar todos los clientes con sus datos principales (nombre, dirección, teléfono, etc.).
-- **Historial de órdenes:** Al hacer clic en un cliente, se puede ver todo el historial de órdenes y compras.
-- **Agregar y editar clientes:** Formulario para agregar nuevos clientes o modificar los existentes.
-- **Análisis de comportamiento:** Generar reportes de frecuencia de compra por cliente.
+- **Listado de clientes:** Mostrar todos los clientes con sus datos principales (nombre, dirección, teléfono, etc.). [listo]
+- **Historial de órdenes:** Al hacer clic en un cliente, se puede ver todo el historial de órdenes y compras. [Listo]
+- **Agregar y editar clientes:** Formulario para agregar nuevos clientes o modificar los existentes. [pendiente]
+- **Análisis de comportamiento:** Generar reportes de frecuencia de compra por cliente. [pendiente]
 
 **Tecnologías:** 
 - Backend: ASP.NET Core

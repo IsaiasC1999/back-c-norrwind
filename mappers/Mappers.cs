@@ -11,8 +11,8 @@ public static class Mappers
         {
             ProductId = p.ProductId,
             ProductName = p.ProductName,
-            CompanyName =  p.Category.CategoryName,
-            CategoryName = p.Category.CategoryName,
+            // CompanyName =  p.Supplier.CompanyName,
+            // CategoryName = p.Category.CategoryName,
             QuantityPerUnit = p.QuantityPerUnit,
             UnitPrice = p.UnitPrice,
             UnitsInStock = p.UnitsInStock,
@@ -46,7 +46,7 @@ public static class Mappers
         {
             ProductId = p.ProductId,
             ProductName = p.ProductName,
-            CompanyName =  p.Category.CategoryName,
+            CompanyName =  p.Supplier.CompanyName,
             CategoryName = p.Category.CategoryName,
             Description = p.Category.Description,
             QuantityPerUnit = p.QuantityPerUnit,
@@ -79,28 +79,69 @@ public static class Mappers
      }
 
 
+     public static EmployeeDTO EmployeeEntitiToEmpleyeeDTO(Employee e)
+     {
+
+         return new EmployeeDTO{
+              FirstName = e.FirstName,
+              LastName = e.LastName,
+              Title = e.Title,
+              HomePhone = e.HomePhone  
+         };
+
+     }   
+
+
      public static OrderDetailsDTO OrderDetailEntityToOrderDetailsDTO(OrderDetail orderDetails)
      {
-        //    var orderDetailsDTO = new OrderDetailsDTO{
-        //             UnitPrice = or.UnitPrice,
-        //             Quantity = or.Quantity,
-        //             Discount = or.Discount,
-        //             ProductDTO = Mappers.ProducEntityToProductoDTO(or.Product),
-                    
-        //    });
-
           
 
            return new OrderDetailsDTO{
                  Discount = orderDetails.Discount,
                  Quantity = orderDetails.Quantity,
                  UnitPrice = orderDetails.UnitPrice,
-                //  ProductDTO = Mappers.ProducEntityToProductoDTO(orderDetails.Product)
+                 ProductDTO = Mappers.ProducEntityToProductoDTO(orderDetails.Product),
+                EmployeeDTO = Mappers.EmployeeEntitiToEmpleyeeDTO(orderDetails.Order.Employee)
            }; 
      }  
 
-     
+     public static List<SuppliersDTO> SuppliersEntityToSuppliersDTO(List<Supplier> supp)
+     {
+           return supp.Select( s => new SuppliersDTO
+           {
+              SupplierId = s.SupplierId,
+              CompanyName = s.CompanyName,
+              ContactName = s.ContactName,
+              ContactTitle = s.ContactTitle,
+              Address = s.Address,
+              City = s.City,
+              Region = s.Region,
+              PostalCode =s.PostalCode,
+              Country = s.Country,
+              Phone = s.Phone,
+              Fax = s.Fax,
+              Homepage = s.Homepage  
+           }).ToList();
+     }
 
+
+    public static Supplier SupplierDTOtoSupplierEntity(SuppliersDTO s)
+    {
+        return new Supplier{
+              SupplierId = s.SupplierId,
+              CompanyName = s.CompanyName,
+              ContactName = s.ContactName,
+              ContactTitle = s.ContactTitle,
+              Address = s.Address,
+              City = s.City,
+              Region = s.Region,
+              PostalCode =s.PostalCode,
+              Country = s.Country,
+              Phone = s.Phone,
+              Fax = s.Fax,
+              Homepage = s.Homepage  
+        };
+    }
 }
 
 

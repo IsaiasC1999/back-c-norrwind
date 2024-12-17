@@ -9,4 +9,7 @@ public class OrderDetailsDTO
     public float Discount { get; set; }
 
     public virtual ProductDTO ProductDTO { get; set; } = null!;
+
+    public virtual EmployeeDTO EmployeeDTO { get; set; } = null!;
+    
 }
