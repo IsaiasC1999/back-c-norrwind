@@ -1,4 +1,4 @@
-name: Run ls on Ubuntu
+name: DOTNET deploy
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  run-ls:
+  primer-pipeline:
     runs-on: ubuntu-latest
 
     steps:
