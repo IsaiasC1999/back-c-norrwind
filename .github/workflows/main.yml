@@ -1,4 +1,4 @@
-name: Run ls on Ubuntu
+name: DOTNET deploy
 
 on:
   push:
@@ -6,11 +6,18 @@ on:
       - master
 
 jobs:
-  run-ls:
+  primer-pipeline:
     runs-on: ubuntu-latest
 
     steps:
       - name: Run ls command
         run: ls -la
-      - name : Docker ps 
-        run: docker ps 
+
+      - name: Docker ps
+        run: docker ps
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show repository content
+        run: ls
