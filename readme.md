@@ -44,7 +44,7 @@
 
 ---
 
-# Sistema de Gestión de Proveedores  <-- trabajando aqui
+# Sistema de Gestión de Proveedores  
 **Funcionalidad:** Permitir a los empleados gestionar los proveedores de la empresa, actualizando información y visualizando detalles.
 
 ### Características:

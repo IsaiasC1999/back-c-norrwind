@@ -14,10 +14,7 @@ public class RepositorioProductos : IRepositorioProdcutos
         this.db = db;
     }
 
-    public Task<bool> AddProducts(Product product)
-    {
-        throw new NotImplementedException();
-    }
+  
 
     public async Task<List<Product>> GetAllProducts()
     {
@@ -52,6 +49,28 @@ public class RepositorioProductos : IRepositorioProdcutos
    
         return result;
     }
+
+
+    public async Task<bool> AddProducts(Product pro)
+    {   
+           var verifyIdProduct = await db.Products.AnyAsync(p => p.ProductId == pro.ProductId); 
+           var verifyIdSupplier = await db.Products.AnyAsync(p => p.SupplierId == pro.SupplierId); 
+           var verifyIdCategory = await db.Products.AnyAsync(p => p.CategoryId == pro.CategoryId);
+
+           
+
+           if(verifyIdCategory == false ||  verifyIdSupplier == false || verifyIdProduct == true ) 
+           {
+
+               return false; 
+
+           } 
+
+           db.Products.Add(pro);
+           await db.SaveChangesAsync();
+           return true;   
+           
+    } 
 
     // public async Task<List<Product>> GetListProductBySupplier(int idProveedor)
     // {

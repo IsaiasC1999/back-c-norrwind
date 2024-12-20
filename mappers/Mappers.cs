@@ -1,5 +1,6 @@
 using ef_nortwith.dbContext;
 
+
 public static class Mappers
 {
 
@@ -142,6 +143,28 @@ public static class Mappers
               Homepage = s.Homepage  
         };
     }
+
+
+    public static Product ProductDtoByProducEntity(ProducAddDTO p){
+
+         return new Product{
+
+            ProductId = p.ProductId,
+            ProductName = p.ProductName,
+            SupplierId = p.SupplierId,
+            CategoryId = p.CategoryId,  
+            QuantityPerUnit = p.QuantityPerUnit,
+            UnitPrice = p.UnitPrice,
+            UnitsInStock = p.UnitsInStock,
+            UnitsOnOrder = p.UnitsOnOrder,
+            ReorderLevel = p.ReorderLevel,
+            Discontinued = p.Discontinued
+
+         };
+         
+
+    }
+
 }
 
 

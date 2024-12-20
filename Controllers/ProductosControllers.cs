@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ef_nortwith.dbContext;
 using Microsoft.EntityFrameworkCore;
+using ef_nortwith.repositorio;
 
 
 namespace ef_nortwith.Controllers;
@@ -11,10 +12,16 @@ namespace ef_nortwith.Controllers;
 public class ProductosControllers : ControllerBase
 {
     private readonly ProductsServices productsServices;
+    private readonly IRepositorioProdcutos repo;
 
-    public ProductosControllers(ProductsServices productsServices)
+    // public IRepositorioProdcutos Repo { get; }
+
+    // private readonly RepositorioProductos repo;
+
+    public ProductosControllers(ProductsServices productsServices, IRepositorioProdcutos repo)
     {
         this.productsServices = productsServices;
+        this.repo = repo;
     }
 
     [HttpGet("/productos/list")]
@@ -73,9 +80,9 @@ public class ProductosControllers : ControllerBase
 
 
     [HttpGet("/productos/filter-price/")]
-    public async Task<ActionResult> GetAllProductByPrice(int priceInital , int priceFinal)
+    public async Task<ActionResult> GetAllProductByPrice(int priceInital, int priceFinal)
     {
-        var response = await productsServices.GetAllProductByPrice(priceInital,priceFinal);
+        var response = await productsServices.GetAllProductByPrice(priceInital, priceFinal);
         if (response.Success)
         {
 
@@ -106,6 +113,22 @@ public class ProductosControllers : ControllerBase
             return NotFound(response);
         }
 
-    } 
+    }
+
+
+    [HttpPost("/productos/add")]
+    public async Task<ActionResult> PostAddProduct(ProducAddDTO proDTO)
+    {
+
+        var map = Mappers.ProductDtoByProducEntity(proDTO);
+
+        var resu = await repo.AddProducts(map);
+
+        if(resu){
+            return Ok("Se agrego con exito el producto");
+        }
+
+        return BadRequest("Algunas de caterias o errores no existen"); 
+    }
 
 }
