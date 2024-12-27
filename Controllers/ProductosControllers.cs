@@ -127,8 +127,25 @@ public class ProductosControllers : ControllerBase
         if(resu){
             return Ok("Se agrego con exito el producto");
         }
-
+        
         return BadRequest("Algunas de caterias o errores no existen"); 
     }
+
+
+    [HttpPut("/productos/update")]
+    public async Task<ActionResult> PostUpdateProduct(ProducAddDTO proDTO)
+    {
+
+        var map = Mappers.ProductDtoByProducEntity(proDTO);
+        var resu = await repo.UpdateProduct(map);
+
+        if(resu){
+            return Ok("Se actualizo con exito");
+        }
+
+        return BadRequest(" errores no existen"); 
+    }
+
+
 
 }

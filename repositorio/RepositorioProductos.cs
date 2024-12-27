@@ -54,8 +54,8 @@ public class RepositorioProductos : IRepositorioProdcutos
     public async Task<bool> AddProducts(Product pro)
     {   
            var verifyIdProduct = await db.Products.AnyAsync(p => p.ProductId == pro.ProductId); 
-           var verifyIdSupplier = await db.Products.AnyAsync(p => p.SupplierId == pro.SupplierId); 
-           var verifyIdCategory = await db.Products.AnyAsync(p => p.CategoryId == pro.CategoryId);
+           var verifyIdSupplier = await db.Suppliers.AnyAsync(p => p.SupplierId == pro.SupplierId); 
+           var verifyIdCategory = await db.Categories.AnyAsync(p => p.CategoryId == pro.CategoryId);
 
            
 
@@ -70,7 +70,28 @@ public class RepositorioProductos : IRepositorioProdcutos
            await db.SaveChangesAsync();
            return true;   
            
-    } 
+    }
+
+    public async Task<bool> UpdateProduct(Product prod)
+    {   
+        var producto = await db.Products
+                     .FindAsync(prod.ProductId); 
+
+        if(prod == null)
+        {
+            return false;
+        }
+
+        db.Entry(producto).CurrentValues.SetValues(prod); 
+        await db.SaveChangesAsync();
+        return true;
+        
+    }
+
+
+
+
+
 
     // public async Task<List<Product>> GetListProductBySupplier(int idProveedor)
     // {
@@ -80,7 +101,7 @@ public class RepositorioProductos : IRepositorioProdcutos
 
     // public async Task<bool> UpdateProduc(Product product){
 
-        
-               
+
+
     // } 
 }

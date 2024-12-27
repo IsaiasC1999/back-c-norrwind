@@ -10,4 +10,7 @@ public interface IRepositorioProdcutos
     public Task<List<Product>> GetAllProductByPrice(int priceInital , int priceFinal);
 
      public Task<List<Product>> GetAllProductBySuppliers(string proveedor);
+
+
+    public Task<bool> UpdateProduct(Product product);
 }

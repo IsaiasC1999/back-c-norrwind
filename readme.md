@@ -14,13 +14,13 @@
 
 ---
 
-# Catálogo de Productos con Gestión de Inventario
+# Catálogo de Productos con Gestión de Inventario  
 **Funcionalidad:** Un sistema que permita visualizar y gestionar el catálogo de productos, con actualización de inventario y precios.
 
 ### Características:
 - **Listado de productos:** Mostrar todos los productos con información relevante como nombre, categoría, precio, stock y proveedor. [Listo]
 - **Filtros:** Filtrar productos por categoría, rango de precios o proveedor.  [Listo] 
-- **Actualización de inventario:** Crear un formulario que permita actualizar el inventario o agregar nuevos productos. [pendiente]
+- **Actualización de inventario:** Crear un formulario que permita actualizar el inventario o agregar nuevos productos. [Listo]
 - **Historial de precios:** Mantener un historial de cambios de precios de los productos. [pendiente]
 
 **Tecnologías:** 
