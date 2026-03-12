@@ -1,4 +1,5 @@
 using ef_nortwith.dbContext;
+using ef_nortwith.DTOs;
 
 public interface IRepositorioProdcutos 
 {
@@ -13,4 +14,10 @@ public interface IRepositorioProdcutos
 
 
     public Task<bool> UpdateProduct(Product product);
+
+    public Task<List<Product>> GetProducts(ProductFilter filter);
+
+    public Task<bool> DeleteProduct(int id);
+
+    public Task<List<Category>> GetAllCategories();
 }

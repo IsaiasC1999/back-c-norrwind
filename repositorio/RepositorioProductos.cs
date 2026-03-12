@@ -1,6 +1,7 @@
 
 
 using ef_nortwith.dbContext;
+using ef_nortwith.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace ef_nortwith.repositorio;
@@ -47,7 +48,53 @@ public class RepositorioProductos : IRepositorioProdcutos
     {
          var result = await db.Products.Include(p=> p.Category).Where(p=> p.Supplier.CompanyName == proveedor).ToListAsync();
    
-        return result;
+         return result;
+    }
+
+    public async Task<List<Product>> GetProducts(ProductFilter filter)
+    {
+        var query = db.Products.Include(p => p.Supplier).Include(p => p.Category).AsQueryable();
+
+        if (!string.IsNullOrEmpty(filter.Category))
+        {
+            query = query.Where(p => p.Category != null && p.Category.CategoryName == filter.Category);
+        }
+
+        if (filter.PriceMin.HasValue)
+        {
+            query = query.Where(p => p.UnitPrice >= filter.PriceMin.Value);
+        }
+
+        if (filter.PriceMax.HasValue)
+        {
+            query = query.Where(p => p.UnitPrice <= filter.PriceMax.Value);
+        }
+
+        if (!string.IsNullOrEmpty(filter.Supplier))
+        {
+            query = query.Where(p => p.Supplier != null && p.Supplier.CompanyName == filter.Supplier);
+        }
+
+        return await query.ToListAsync();
+    }
+
+    public async Task<bool> DeleteProduct(int id)
+    {
+        var product = await db.Products.FindAsync(id);
+        
+        if (product == null)
+        {
+            return false;
+        }
+
+        db.Products.Remove(product);
+        await db.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<List<Category>> GetAllCategories()
+    {
+        return await db.Categories.ToListAsync();
     }
 
 
@@ -77,7 +124,7 @@ public class RepositorioProductos : IRepositorioProdcutos
         var producto = await db.Products
                      .FindAsync(prod.ProductId); 
 
-        if(prod == null)
+        if(producto == null)
         {
             return false;
         }

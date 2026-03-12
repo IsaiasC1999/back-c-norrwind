@@ -1,30 +1,9 @@
-*.swp
-*.*~
-project.lock.json
-.DS_Store
-*.pyc
-nupkg/
-
-# Visual Studio Code
-.vscode/
-
-# Rider
-.idea/
-
-# Visual Studio
-.vs/
-
-# Fleet
-.fleet/
-
-# Code Rush
-.cr/
-
 # User-specific files
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+*.userprefs
 
 # Build results
 [Dd]ebug/
@@ -33,7 +12,9 @@ nupkg/
 [Rr]eleases/
 x64/
 x86/
-build/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
 bld/
 [Bb]in/
 [Oo]bj/
@@ -41,3 +22,75 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Fleet
+.fleet/
+
+# Code Rush
+.cr/
+
+# NuGet
+*.nupkg
+nupkg/
+project.lock.json
+project.fragment.lock.json
+*.lock
+*.lock.json
+
+# Package restore
+**/[Pp]ackages/*
+
+# .NET Core
+project.fragment.lock.json
+*.project.lock.json
+*.project.fragment.lock.json
+
+# ASP.NET Core
+appsettings.Development.json
+
+# Secrets
+appsettings.*.json
+appsettings.json
+!appsettings.json
+*.local.json
+
+# Test results
+[Tt]est/[Rr]esults/
+[Aa][Rr][Tt]ifacts/
+
+# MVC/Web
+wwwroot/
+**/*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.*~
+
+# Entity Framework
+*.db
+*.sqlite
+*.db-shm
+*.db-wal

@@ -1,11 +1,12 @@
 {
   "Version": 1,
-  "Hash": "Qjs1opBy5p1xw8Jan7bDHntsYknbox3iJow0jEJOYoI=",
+  "Hash": "PaTMYFyNHODvieQn/YDOBFmu8wypFK+pZtUtgFAuksI=",
   "Source": "ef-nortwith",
   "BasePath": "_content/ef-nortwith",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": []
+  "Assets": [],
+  "Endpoints": []
 }

@@ -1,4 +1,5 @@
 using ef_nortwith.dbContext;
+using ef_nortwith.DTOs;
 using ef_nortwith.repositorio;
 
 public class ProductsServices
@@ -95,6 +96,62 @@ public class ProductsServices
             Error = ""
         };
 
+    }
+
+    public async Task<ResponseServices> GetProducts(ProductFilter filter)
+    {
+        var products = await repositorioProductos.GetProducts(filter);
+
+        if (products == null || products.Count == 0)
+        {
+            return new ResponseServices
+            {
+                Success = false,
+                Error = "No se encontraron productos con los filtros especificados",
+                Result = null
+            };
+        }
+
+        return new ResponseServices
+        {
+            Success = true,
+            Result = Mappers.ProducEntitiesToProductDTOs(products),
+            Error = ""
+        };
+    }
+
+    public async Task<ResponseServices> DeleteProduct(int id)
+    {
+        var result = await repositorioProductos.DeleteProduct(id);
+
+        if (!result)
+        {
+            return new ResponseServices
+            {
+                Success = false,
+                Error = "El producto no existe o no se pudo eliminar",
+                Result = null
+            };
+        }
+
+        return new ResponseServices
+        {
+            Success = true,
+            Result = "Producto eliminado correctamente",
+            Error = ""
+        };
+    }
+
+    public async Task<ResponseServices> GetAllCategories()
+    {
+        var categories = await repositorioProductos.GetAllCategories();
+
+        return new ResponseServices
+        {
+            Success = true,
+            Result = categories,
+            Error = ""
+        };
     }
 
 }
