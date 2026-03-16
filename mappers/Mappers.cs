@@ -1,13 +1,11 @@
 using ef_nortwith.dbContext;
-
+using ef_nortwith.DTOs;
 
 public static class Mappers
 {
 
-
     public static ProductDTO ProducEntityToProductoDTO(Product p)
     {
-
         return new ProductDTO
         {
             ProductId = p.ProductId,
@@ -22,7 +20,6 @@ public static class Mappers
             ReorderLevel = p.ReorderLevel,
             Discontinued = p.Discontinued
         };
-
     }
 
     public static OrderDTO OrderEntityToOrderDTO(Order order)
@@ -30,15 +27,17 @@ public static class Mappers
         return new OrderDTO
         {
             OrderId = order.OrderId,
-            NameCustomer = order.CustomerId,
-            NameEmployes = order.EmployeeId.ToString(),
+            NameCustomer = order.Customer?.CompanyName ?? "",
+            NameEmployes = order.Employee?.FirstName + " " + order.Employee?.LastName ?? "",
             OrderDate = order.OrderDate,
             RequiredDate = order.RequiredDate,
             ShippedDate = order.ShippedDate,
             ShipAddress = order.ShipAddress,
             ShipCity = order.ShipCity,
-            ShipRegion = order.ShipCity,
-            ShipPostalCode = order.ShipPostalCode
+            ShipRegion = order.ShipRegion,
+            ShipPostalCode = order.ShipPostalCode,
+            ShipCountry = order.ShipCountry,
+            Freight = order.Freight != null ? (decimal?)order.Freight : null
         };
     }    
 
@@ -61,109 +60,121 @@ public static class Mappers
     }
 
 
-     public static List<OrderListDTO> OrderEntitiesToOrderListDTO(List<Order> orders)
-     {
-
-
-        var orderListDTO = orders.Select( order => new OrderListDTO{
-
-               OrderId = order.OrderId,
-               NameCustomer = order.Customer.CustomerId,
-               NameEmployes = order.Employee.FirstName + " " +order.Employee.LastName,
-               OrderDate = order.OrderDate,
-               RequiredDate = order.RequiredDate,
-               ShippedDate = order.ShippedDate 
-
+    public static List<OrderListDTO> OrderEntitiesToOrderListDTO(List<Order> orders)
+    {
+        var orderListDTO = orders.Select(order => new OrderListDTO
+        {
+            OrderId = order.OrderId,
+            NameCustomer = order.Customer?.CompanyName ?? "",
+            NameEmployes = (order.Employee?.FirstName ?? "") + " " + (order.Employee?.LastName ?? ""),
+            OrderDate = order.OrderDate,
+            RequiredDate = order.RequiredDate,
+            ShippedDate = order.ShippedDate
         }).ToList();
 
-           return orderListDTO; 
-
-     }
-
-
-     public static EmployeeDTO EmployeeEntitiToEmpleyeeDTO(Employee e)
-     {
-
-         return new EmployeeDTO{
-              FirstName = e.FirstName,
-              LastName = e.LastName,
-              Title = e.Title,
-              HomePhone = e.HomePhone  
-         };
-
-     }   
+        return orderListDTO;
+    }
 
 
-     public static OrderDetailsDTO OrderDetailEntityToOrderDetailsDTO(OrderDetail orderDetails)
-     {
-          
-
-           return new OrderDetailsDTO{
-                 Discount = orderDetails.Discount,
-                 Quantity = orderDetails.Quantity,
-                 UnitPrice = orderDetails.UnitPrice,
-                 ProductDTO = Mappers.ProducEntityToProductoDTO(orderDetails.Product),
-                EmployeeDTO = Mappers.EmployeeEntitiToEmpleyeeDTO(orderDetails.Order.Employee)
-           }; 
-     }  
-
-     public static List<SuppliersDTO> SuppliersEntityToSuppliersDTO(List<Supplier> supp)
-     {
-           return supp.Select( s => new SuppliersDTO
-           {
-              SupplierId = s.SupplierId,
-              CompanyName = s.CompanyName,
-              ContactName = s.ContactName,
-              ContactTitle = s.ContactTitle,
-              Address = s.Address,
-              City = s.City,
-              Region = s.Region,
-              PostalCode =s.PostalCode,
-              Country = s.Country,
-              Phone = s.Phone,
-              Fax = s.Fax,
-              Homepage = s.Homepage  
-           }).ToList();
-     }
-
-
-    public static Supplier SupplierDTOtoSupplierEntity(SuppliersDTO s)
+    public static EmployeeDTO EmployeeEntitiToEmpleyeeDTO(Employee e)
     {
-        return new Supplier{
-              SupplierId = s.SupplierId,
-              CompanyName = s.CompanyName,
-              ContactName = s.ContactName,
-              ContactTitle = s.ContactTitle,
-              Address = s.Address,
-              City = s.City,
-              Region = s.Region,
-              PostalCode =s.PostalCode,
-              Country = s.Country,
-              Phone = s.Phone,
-              Fax = s.Fax,
-              Homepage = s.Homepage  
+        return new EmployeeDTO
+        {
+            FirstName = e.FirstName,
+            LastName = e.LastName,
+            Title = e.Title,
+            HomePhone = e.HomePhone
         };
     }
 
 
-    public static Product ProductDtoByProducEntity(ProducAddDTO p){
+    public static OrderDetailsDTO OrderDetailEntityToOrderDetailsDTO(OrderDetail orderDetails)
+    {
+        return new OrderDetailsDTO
+        {
+            Discount = orderDetails.Discount,
+            Quantity = orderDetails.Quantity,
+            UnitPrice = orderDetails.UnitPrice,
+            ProductDTO = orderDetails.Product != null ? Mappers.ProducEntityToProductoDTO(orderDetails.Product) : null,
+            EmployeeDTO = orderDetails.Order?.Employee != null ? Mappers.EmployeeEntitiToEmpleyeeDTO(orderDetails.Order.Employee) : null
+        };
+    }
 
-         return new Product{
+    public static List<SuppliersDTO> SuppliersEntityToSuppliersDTO(List<Supplier> supp)
+    {
+        return supp.Select(s => new SuppliersDTO
+        {
+            SupplierId = s.SupplierId,
+            CompanyName = s.CompanyName,
+            ContactName = s.ContactName,
+            ContactTitle = s.ContactTitle,
+            Address = s.Address,
+            City = s.City,
+            Region = s.Region,
+            PostalCode = s.PostalCode,
+            Country = s.Country,
+            Phone = s.Phone,
+            Fax = s.Fax,
+            Homepage = s.Homepage
+        }).ToList();
+    }
 
+
+    public static Supplier SupplierDTOtoSupplierEntity(SuppliersDTO s)
+    {
+        return new Supplier
+        {
+            SupplierId = s.SupplierId,
+            CompanyName = s.CompanyName,
+            ContactName = s.ContactName,
+            ContactTitle = s.ContactTitle,
+            Address = s.Address,
+            City = s.City,
+            Region = s.Region,
+            PostalCode = s.PostalCode,
+            Country = s.Country,
+            Phone = s.Phone,
+            Fax = s.Fax,
+            Homepage = s.Homepage
+        };
+    }
+
+
+    public static Product ProductDtoByProducEntity(ProducAddDTO p)
+    {
+        return new Product
+        {
             ProductId = p.ProductId,
             ProductName = p.ProductName,
             SupplierId = p.SupplierId,
-            CategoryId = p.CategoryId,  
+            CategoryId = p.CategoryId,
             QuantityPerUnit = p.QuantityPerUnit,
             UnitPrice = p.UnitPrice,
             UnitsInStock = p.UnitsInStock,
             UnitsOnOrder = p.UnitsOnOrder,
             ReorderLevel = p.ReorderLevel,
             Discontinued = p.Discontinued
+        };
+    }
 
-         };
-         
-
+    public static Order OrderAddDTOToOrder(OrderAddDTO dto)
+    {
+        return new Order
+        {
+            CustomerId = dto.CustomerId,
+            EmployeeId = (short)dto.EmployeeId,
+            OrderDate = dto.OrderDate.HasValue ? DateOnly.FromDateTime(dto.OrderDate.Value) : null,
+            RequiredDate = dto.RequiredDate.HasValue ? DateOnly.FromDateTime(dto.RequiredDate.Value) : null,
+            ShippedDate = dto.ShippedDate.HasValue ? DateOnly.FromDateTime(dto.ShippedDate.Value) : null,
+            ShipVia = dto.ShipVia.HasValue ? (short?)dto.ShipVia.Value : null,
+            Freight = dto.Freight.HasValue ? (float?)dto.Freight.Value : null,
+            ShipName = dto.ShipName,
+            ShipAddress = dto.ShipAddress,
+            ShipCity = dto.ShipCity,
+            ShipRegion = dto.ShipRegion,
+            ShipPostalCode = dto.ShipPostalCode,
+            ShipCountry = dto.ShipCountry
+        };
     }
 
 }

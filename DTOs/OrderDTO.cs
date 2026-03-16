@@ -1,6 +1,8 @@
+namespace ef_nortwith.DTOs;
+
 public class OrderDTO
 {
-    public short OrderId { get; set; }
+    public int OrderId { get; set; }
 
     public string NameCustomer { get; set; } = "";
 
@@ -19,5 +21,9 @@ public class OrderDTO
     public string? ShipRegion { get; set; }
 
     public string? ShipPostalCode { get; set; }
+
+    public string? ShipCountry { get; set; }
+
+    public decimal? Freight { get; set; }
 
 }

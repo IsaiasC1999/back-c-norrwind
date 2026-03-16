@@ -1,7 +1,9 @@
 using ef_nortwith.dbContext;
+using ef_nortwith.DTOs;
+using ef_nortwith.interfacez;
 using Microsoft.EntityFrameworkCore;
 
-public class RepositorioOrdenes
+public class RepositorioOrdenes : IRepositorioOrdenes
 {
     private readonly NorthwindContext db;
 
@@ -10,28 +12,113 @@ public class RepositorioOrdenes
         this.db = db;
     }
 
-    public async Task<List<Order>> GetAllOrders(){
-
-
-            return await db.Orders.Include(e => e.Employee).Include(c => c.Customer).Take(5).ToListAsync();
-
-
+    public async Task<List<Order>> GetAllOrders()
+    {
+        return await db.Orders
+            .Include(e => e.Employee)
+            .Include(c => c.Customer)
+            .ToListAsync();
     }
 
-
-    public async Task<OrderDetail> GetOrderDetail(int idOrder)
+    public async Task<List<Order>> GetOrders(OrderFilter filter)
     {
+        var query = db.Orders
+            .Include(e => e.Employee)
+            .Include(c => c.Customer)
+            .AsQueryable();
 
-            return await db.OrderDetails.Include(p => p.Product).Include(e =>e.Order.Employee).FirstOrDefaultAsync(or => or.OrderId == idOrder);
+        if (filter == null)
+        {
+            return await query.ToListAsync();
+        }
 
+        if (!string.IsNullOrEmpty(filter.Cliente))
+        {
+            query = query.Where(o => o.Customer != null && o.Customer.CompanyName.Contains(filter.Cliente));
+        }
+
+        if (filter.FechaInicio.HasValue)
+        {
+            query = query.Where(o => o.OrderDate >= DateOnly.FromDateTime(filter.FechaInicio.Value));
+        }
+
+        if (filter.FechaFin.HasValue)
+        {
+            query = query.Where(o => o.OrderDate <= DateOnly.FromDateTime(filter.FechaFin.Value));
+        }
+
+        if (filter.EmpleadoId.HasValue)
+        {
+            query = query.Where(o => o.EmployeeId == filter.EmpleadoId.Value);
+        }
+
+        return await query.ToListAsync();
     }
- 
-    
-    public async Task<List<Order>> GetAllOrdersDate(DateTime startDate , DateTime endDate)
+
+    public async Task<Order?> GetOrderById(int id)
     {
-        //
-        return await db.Orders.Where(o => o.RequiredDate >= DateOnly.FromDateTime(startDate) && o.RequiredDate <= DateOnly.FromDateTime(endDate)).ToListAsync();
-    } 
+        return await db.Orders
+            .Include(e => e.Employee)
+            .Include(c => c.Customer)
+            .FirstOrDefaultAsync(o => o.OrderId == id);
+    }
 
+    public async Task<OrderDetail?> GetOrderDetail(int idOrder)
+    {
+        return await db.OrderDetails
+            .Include(p => p.Product)
+            .Include(e => e.Order.Employee)
+            .FirstOrDefaultAsync(or => or.OrderId == idOrder);
+    }
 
+    public async Task<List<Order>> GetOrdersByDate(DateTime startDate, DateTime endDate)
+    {
+        return await db.Orders
+            .Include(e => e.Employee)
+            .Include(c => c.Customer)
+            .Where(o => o.RequiredDate >= DateOnly.FromDateTime(startDate) && o.RequiredDate <= DateOnly.FromDateTime(endDate))
+            .ToListAsync();
+    }
+
+    public async Task<bool> CreateOrder(Order order)
+    {
+        try
+        {
+            db.Orders.Add(order);
+            await db.SaveChangesAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> UpdateOrder(Order order)
+    {
+        var existingOrder = await db.Orders.FindAsync(order.OrderId);
+        
+        if (existingOrder == null)
+        {
+            return false;
+        }
+
+        db.Entry(existingOrder).CurrentValues.SetValues(order);
+        await db.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> DeleteOrder(int id)
+    {
+        var order = await db.Orders.FindAsync(id);
+        
+        if (order == null)
+        {
+            return false;
+        }
+
+        db.Orders.Remove(order);
+        await db.SaveChangesAsync();
+        return true;
+    }
 }

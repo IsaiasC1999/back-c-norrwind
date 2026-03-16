@@ -1,7 +1,9 @@
+namespace ef_nortwith.DTOs;
+
 public class OrderListDTO
 {
 
-    public short OrderId { get; set; }
+    public int OrderId { get; set; }
 
     public string NameCustomer { get; set; } = "";
 
@@ -13,5 +15,4 @@ public class OrderListDTO
 
     public DateOnly? ShippedDate { get; set; }
 
-    
 }

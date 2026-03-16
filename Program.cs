@@ -1,6 +1,7 @@
 using System.Security.Cryptography.Xml;
 using System.Text.Json.Serialization;
 using ef_nortwith.dbContext;
+using ef_nortwith.interfacez;
 using ef_nortwith.repositorio;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,8 +28,11 @@ builder.Services.AddDbContext<NorthwindContext>(opc =>{
 });
 builder.Services.AddTransient<ProductsServices>();
 builder.Services.AddTransient<IRepositorioProdcutos,RepositorioProductos>();
-builder.Services.AddTransient<RepositorioOrdenes>();
+builder.Services.AddTransient<IRepositorioOrdenes, RepositorioOrdenes>();
+builder.Services.AddTransient<OrdenesServices>();
 builder.Services.AddTransient<RepositorioProveedores>();
+builder.Services.AddTransient<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddTransient<UsuarioService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

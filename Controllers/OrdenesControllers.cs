@@ -1,84 +1,137 @@
-using ef_nortwith.dbContext;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
+using ef_nortwith.DTOs;
+using ef_nortwith.interfacez;
 
 namespace ef_nortwith.Controllers;
 
-
 [ApiController]
-[Route("[controller]")]
+[Route("api/Ordenes")]
 public class OrdenesControllers : ControllerBase
 {
-    private readonly NorthwindContext db;
-    private readonly RepositorioOrdenes repositorioOrdenes;
+    private readonly OrdenesServices ordenesServices;
+    private readonly IRepositorioOrdenes repo;
 
-    public OrdenesControllers(NorthwindContext db, RepositorioOrdenes repositorioOrdenes) 
+    public OrdenesControllers(OrdenesServices ordenesServices, IRepositorioOrdenes repo)
     {
-        this.db = db;
-        this.repositorioOrdenes = repositorioOrdenes;
+        this.ordenesServices = ordenesServices;
+        this.repo = repo;
     }
 
-    [HttpGet("/order/to-list")]
-    public async Task<ActionResult<List<Order>>> GetAllOrders()
+    [HttpGet]
+    public async Task<ActionResult> GetAllOrders([FromQuery] OrderFilter? filter)
     {
-        var listaOrder = await db.Orders.ToArrayAsync();
-        return Ok(listaOrder);
-
-    }
-
-    [HttpGet("/order/{cliente}")]
-    public async Task<ActionResult<List<Order>>> getOrderbyId(string cliente)
-    {
-        var resu = await db.Customers.AnyAsync(cl => cl.CustomerId == cliente);
-
-        if (!resu)
+        if (filter == null || (string.IsNullOrEmpty(filter.Cliente) && 
+            !filter.FechaInicio.HasValue && !filter.FechaFin.HasValue && 
+            !filter.EmpleadoId.HasValue))
         {
-            return NotFound("No existe el id");
+            var response = await ordenesServices.GetAllOrders();
+            return Ok(response);
         }
 
-        var listadoOrderbyId = await db.Orders.Where(or => or.CustomerId == cliente).ToArrayAsync();
+        var responseFiltered = await ordenesServices.GetOrders(filter);
 
-        return Ok(listadoOrderbyId);
+        if (responseFiltered.Success)
+        {
+            return Ok(responseFiltered);
+        }
+        else
+        {
+            return NotFound(responseFiltered);
+        }
     }
 
-
-
-    [HttpGet("/order-limit")]
-    public async Task<ActionResult<List<OrderListDTO>>> GetAllOrdersDos()
+    [HttpGet("{id}")]
+    public async Task<ActionResult> GetOrderById(int id)
     {
+        var response = await ordenesServices.GetOrderById(id);
 
-        var resu =  await repositorioOrdenes.GetAllOrders();
-         
-        var resuFinal = Mappers.OrderEntitiesToOrderListDTO(resu); 
-
-        return Ok(resuFinal);
-
+        if (response.Success)
+        {
+            return Ok(response);
+        }
+        else
+        {
+            return NotFound(response);
+        }
     }
 
-
-    [HttpGet("/order/{idOrder}/detalle")]
-    public async Task<ActionResult<OrderDetailsDTO>> GetOrderDetails(int idOrder){
-
-            var resu =  await repositorioOrdenes.GetOrderDetail(idOrder);
-
-            var orderDeteailDto = Mappers.OrderDetailEntityToOrderDetailsDTO(resu);
-
-            return orderDeteailDto;
-
-    }
-
-    [HttpGet("/order/filter-date")]
-    public async Task<ActionResult<List<OrderDetailsDTO>>> GetOrderDetailsDate([FromQuery]DateTime startDate , [FromQuery] DateTime endDate)
+    [HttpGet("{id}/detalle")]
+    public async Task<ActionResult> GetOrderDetail(int id)
     {
+        var response = await ordenesServices.GetOrderDetail(id);
 
-        var resu = await repositorioOrdenes.GetAllOrdersDate(startDate , endDate);
-        
-        return Ok(resu);
+        if (response.Success)
+        {
+            return Ok(response);
+        }
+        else
+        {
+            return NotFound(response);
+        }
     }
 
+    [HttpPost]
+    public async Task<ActionResult> CreateOrder(OrderAddDTO orderDTO)
+    {
+        if (string.IsNullOrWhiteSpace(orderDTO.CustomerId))
+        {
+            return BadRequest(new ResponseServices
+            {
+                Success = false,
+                Error = "El cliente es obligatorio",
+                Result = null
+            });
+        }
+
+        if (orderDTO.EmployeeId <= 0)
+        {
+            return BadRequest(new ResponseServices
+            {
+                Success = false,
+                Error = "El empleado es obligatorio",
+                Result = null
+            });
+        }
+
+        var response = await ordenesServices.CreateOrder(orderDTO);
+
+        if (response.Success)
+        {
+            return Ok(response);
+        }
+        else
+        {
+            return BadRequest(response);
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateOrder(int id, OrderAddDTO orderDTO)
+    {
+        var response = await ordenesServices.UpdateOrder(id, orderDTO);
+
+        if (response.Success)
+        {
+            return Ok(response);
+        }
+        else
+        {
+            return BadRequest(response);
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteOrder(int id)
+    {
+        var response = await ordenesServices.DeleteOrder(id);
+
+        if (response.Success)
+        {
+            return Ok(response);
+        }
+        else
+        {
+            return NotFound(response);
+        }
+    }
 }
-
-
-
-

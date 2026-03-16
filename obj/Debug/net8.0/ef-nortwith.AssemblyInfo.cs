@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ef-nortwith")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7789cd078ae80d16c378cd7b3316a95540d98c5c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b06e63c0ab6e8fe88a4a09dbd66edcd7456496f")]
 [assembly: System.Reflection.AssemblyProductAttribute("ef-nortwith")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ef-nortwith")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

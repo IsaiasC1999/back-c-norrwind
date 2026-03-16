@@ -213,7 +213,6 @@ C:\Users\isaias\Desktop\isaias\practicas\ProyectoNorwind\back-c-norrwind\obj\Deb
 C:\Users\isaias\Desktop\isaias\practicas\ProyectoNorwind\back-c-norrwind\obj\Debug\net8.0\ef-nortwith.pdb
 C:\Users\isaias\Desktop\isaias\practicas\ProyectoNorwind\back-c-norrwind\obj\Debug\net8.0\ef-nortwith.genruntimeconfig.cache
 C:\Users\isaias\Desktop\isaias\practicas\ProyectoNorwind\back-c-norrwind\obj\Debug\net8.0\ref\ef-nortwith.dll
-C:\Users\isaias\Desktop\isaias\practicas\ProyectoNorwind\back-c-norrwind\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\isaias romano\Desktop\trabajo\practicas-ia\proyecto-nortwind\back-end\back-c-norrwind\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\isaias romano\Desktop\trabajo\practicas-ia\proyecto-nortwind\back-end\back-c-norrwind\bin\Debug\net8.0\appsettings.json
 C:\Users\isaias romano\Desktop\trabajo\practicas-ia\proyecto-nortwind\back-end\back-c-norrwind\bin\Debug\net8.0\ef-nortwith.staticwebassets.endpoints.json
@@ -323,3 +322,4 @@ C:\Users\isaias romano\Desktop\trabajo\practicas-ia\proyecto-nortwind\back-end\b
 C:\Users\isaias romano\Desktop\trabajo\practicas-ia\proyecto-nortwind\back-end\back-c-norrwind\obj\Debug\net8.0\ef-nortwith.pdb
 C:\Users\isaias romano\Desktop\trabajo\practicas-ia\proyecto-nortwind\back-end\back-c-norrwind\obj\Debug\net8.0\ef-nortwith.genruntimeconfig.cache
 C:\Users\isaias romano\Desktop\trabajo\practicas-ia\proyecto-nortwind\back-end\back-c-norrwind\obj\Debug\net8.0\ref\ef-nortwith.dll
+C:\Users\isaias\Desktop\isaias\practicas\ProyectoNorwind\back-c-norrwind\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
