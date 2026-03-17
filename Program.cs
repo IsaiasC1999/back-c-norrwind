@@ -1,11 +1,17 @@
 using System.Security.Cryptography.Xml;
+using System.Text;
 using System.Text.Json.Serialization;
 using ef_nortwith.dbContext;
 using ef_nortwith.interfacez;
 using ef_nortwith.repositorio;
+using ef_nortwith.services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+string key = "kn5ln23nm4jn5kj43n1kn43325nkj6543";
 
 // Add services to the container.
 
@@ -20,6 +26,19 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    var signinkey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+    var signinCredemtial = new SigningCredentials(signinkey, SecurityAlgorithms.HmacSha256Signature);
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateAudience = false,
+        ValidateIssuer = false,
+        IssuerSigningKey = signinkey,
+    };
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -46,6 +65,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowAll");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

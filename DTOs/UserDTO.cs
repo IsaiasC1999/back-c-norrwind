@@ -11,4 +11,6 @@ public class UserDTO
     public string Role { get; set; } = "usuario";
 
     public bool IsActive { get; set; }
+
+    public string? Token { get; set; }
 }
