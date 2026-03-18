@@ -52,6 +52,8 @@ builder.Services.AddTransient<OrdenesServices>();
 builder.Services.AddTransient<RepositorioProveedores>();
 builder.Services.AddTransient<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddTransient<UsuarioService>();
+builder.Services.AddTransient<IRepositorioEmpleados, RepositorioEmpleados>();
+builder.Services.AddTransient<EmpleadosServices>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -699,3 +699,322 @@ const response = await fetch('http://localhost:5077/api/Ordenes', {
 2. **Siempre verificar `success`**: Antes de procesar el resultado
 3. **Manejo de errores**: El campo `error` contiene el mensaje de error
 4. **IDs de cliente/empleado**: Verificar que existan antes de crear una orden
+
+---
+
+# Módulo de Empleados (RRHH)
+
+## Base URL
+```
+http://localhost:5077/api/Empleados
+```
+
+---
+
+## Endpoints Disponibles
+
+### 1. Obtener todos los empleados (con filtros opcionales)
+**GET** `/api/Empleados`
+
+#### Sin filtros (todos los empleados)
+```
+GET http://localhost:5077/api/Empleados
+```
+
+#### Con filtros
+```
+GET http://localhost:5077/api/Empleados?Nombre=Ana&FechaIngreso=2023-01-15
+```
+
+#### Parámetros de Query (todos opcionales)
+| Parámetro | Tipo | Descripción | Ejemplo |
+|-----------|------|-------------|---------|
+| Nombre | string | Filtrar por nombre o apellido | `Nombre=Ana` |
+| FechaIngreso | date | Filtrar por fecha de contratación | `FechaIngreso=2023-01-15` |
+
+#### Respuesta Exitosa (200 OK)
+```json
+{
+  "success": true,
+  "result": [
+    {
+      "employeeId": 1,
+      "lastName": "Davolio",
+      "firstName": "Nancy",
+      "title": "Sales Representative",
+      "titleOfCourtesy": "Ms.",
+      "birthDate": "1968-12-08",
+      "hireDate": "1992-05-01",
+      "address": "507 - 20th Ave. E. Apt. 2A",
+      "city": "Seattle",
+      "region": "WA",
+      "postalCode": "98122",
+      "country": "USA",
+      "homePhone": "(206) 555-9857",
+      "extension": "5467",
+      "notes": null,
+      "reportsTo": 2,
+      "username": "ndavolio",
+      "role": "usuario",
+      "hasUser": true
+    }
+  ],
+  "error": ""
+}
+```
+
+---
+
+### 2. Obtener empleado por ID
+**GET** `/api/Empleados/{id}`
+
+```
+GET http://localhost:5077/api/Empleados/1
+```
+
+#### Respuesta Exitosa (200 OK)
+```json
+{
+  "success": true,
+  "result": {
+    "employeeId": 1,
+    "lastName": "Davolio",
+    "firstName": "Nancy",
+    "title": "Sales Representative",
+    "titleOfCourtesy": "Ms.",
+    "birthDate": "1968-12-08",
+    "hireDate": "1992-05-01",
+    "address": "507 - 20th Ave. E. Apt. 2A",
+    "city": "Seattle",
+    "region": "WA",
+    "postalCode": "98122",
+    "country": "USA",
+    "homePhone": "(206) 555-9857",
+    "extension": "5467",
+    "notes": null,
+    "reportsTo": 2,
+    "username": "ndavolio",
+    "role": "usuario",
+    "hasUser": true
+  },
+  "error": ""
+}
+```
+
+#### Respuesta Error (404 Not Found)
+```json
+{
+  "success": false,
+  "result": null,
+  "error": "Empleado no encontrado"
+}
+```
+
+---
+
+### 3. Crear nuevo empleado
+**POST** `/api/Empleados`
+
+```
+POST http://localhost:5077/api/Empleados
+Content-Type: application/json
+```
+
+#### Request Body
+```json
+{
+  "lastName": "Pérez",
+  "firstName": "Juan",
+  "title": "Analista",
+  "titleOfCourtesy": "Sr.",
+  "birthDate": "1990-03-15",
+  "hireDate": "2024-01-10",
+  "address": "Calle Principal 123",
+  "city": "Madrid",
+  "region": "MD",
+  "postalCode": "28001",
+  "country": "España",
+  "homePhone": "+34 612 345 678",
+  "extension": "123",
+  "reportsTo": 1,
+  "username": "jperez",
+  "password": "password123",
+  "role": "admin"
+}
+```
+
+#### Validaciones
+- `lastName`: **Obligatorio** - Apellido del empleado
+- `firstName`: **Obligatorio** - Nombre del empleado
+- `role`: Opcional - Valores permitidos: "admin", "usuario" (por defecto "usuario")
+
+#### Respuesta Exitosa (200 OK)
+```json
+{
+  "success": true,
+  "result": {
+    "employeeId": 10,
+    "lastName": "Pérez",
+    "firstName": "Juan",
+    "title": "Analista",
+    "hasUser": true,
+    "username": "jperez"
+  },
+  "error": ""
+}
+```
+
+#### Respuesta Error (400 Bad Request)
+```json
+{
+  "success": false,
+  "result": null,
+  "error": "El nombre es obligatorio"
+}
+```
+
+---
+
+### 4. Actualizar empleado
+**PUT** `/api/Empleados/{id}`
+
+```
+PUT http://localhost:5077/api/Empleados/1
+Content-Type: application/json
+```
+
+#### Request Body
+```json
+{
+  "lastName": "Davolio",
+  "firstName": "Nancy Actualizada",
+  "title": "Gerente de Ventas",
+  "city": "Seattle",
+  "homePhone": "(206) 555-9999"
+}
+```
+
+#### Respuesta Exitosa (200 OK)
+```json
+{
+  "success": true,
+  "result": {
+    "employeeId": 1,
+    "lastName": "Davolio",
+    "firstName": "Nancy Actualizada",
+    "title": "Gerente de Ventas",
+    "city": "Seattle",
+    "hasUser": true,
+    "username": "ndavolio"
+  },
+  "error": ""
+}
+```
+
+#### Respuesta Error (400 Bad Request)
+```json
+{
+  "success": false,
+  "result": null,
+  "error": "El apellido es obligatorio"
+}
+```
+
+---
+
+### 5. Eliminar empleado
+**DELETE** `/api/Empleados/{id}`
+
+```
+DELETE http://localhost:5077/api/Empleados/10
+```
+
+#### Respuesta Exitosa (200 OK)
+```json
+{
+  "success": true,
+  "result": true,
+  "error": ""
+}
+```
+
+#### Respuesta Error (404 Not Found)
+```json
+{
+  "success": false,
+  "result": null,
+  "error": "Empleado no encontrado"
+}
+```
+
+---
+
+## Modelos de Datos
+
+### EmployeeDTO (Respuesta)
+```typescript
+interface EmployeeDTO {
+  employeeId: number;
+  lastName: string;
+  firstName: string;
+  title: string | null;
+  titleOfCourtesy: string | null;
+  birthDate: string | null;
+  hireDate: string | null;
+  address: string | null;
+  city: string | null;
+  region: string | null;
+  postalCode: string | null;
+  country: string | null;
+  homePhone: string | null;
+  extension: string | null;
+  notes: string | null;
+  reportsTo: number | null;
+  username: string | null;
+  role: string | null;
+  hasUser: boolean;
+}
+```
+
+### EmployeeAddDTO (Request - POST/PUT)
+```typescript
+interface EmployeeAddDTO {
+  lastName: string;
+  firstName: string;
+  title?: string;
+  titleOfCourtesy?: string;
+  birthDate?: string;
+  hireDate?: string;
+  address?: string;
+  city?: string;
+  region?: string;
+  postalCode?: string;
+  country?: string;
+  homePhone?: string;
+  extension?: string;
+  notes?: string;
+  reportsTo?: number;
+  username?: string;
+  password?: string;
+  role?: string; // "admin" | "usuario" (por defecto "usuario")
+}
+```
+
+### EmployeeFilter (Query Parameters)
+```typescript
+interface EmployeeFilter {
+  nombre?: string;
+  fechaIngreso?: string;
+}
+```
+
+---
+
+## Notas Importantes
+
+1. **Usuario asociado**: El campo `hasUser` indica si el empleado tiene acceso al sistema
+2. **Password**: No se retorna en las respuestas por seguridad
+3. **Crear usuario**: Al crear un empleado, se puede incluir `username`, `password` y `role` para generar acceso
+4. **Roles permitidos**: Solo "admin" o "usuario" (por defecto "usuario")
+5. **Empleados sin usuario**: Se muestran igual con `hasUser: false`
+6. **Eliminación en cascada**: Al eliminar un empleado, también se eliminan sus usuarios asociados

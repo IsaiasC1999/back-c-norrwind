@@ -437,7 +437,7 @@ public partial class NorthwindContext : DbContext
             entity.Property(e => e.UpdatedAt)
                 .HasColumnName("updated_at");
 
-            entity.HasOne(d => d.Employee).WithMany()
+            entity.HasOne(d => d.Employee).WithMany(p => p.Users)
                 .HasForeignKey(d => d.EmployeeId)
                 .HasConstraintName("fk_users_employees")
                 .OnDelete(DeleteBehavior.Cascade);

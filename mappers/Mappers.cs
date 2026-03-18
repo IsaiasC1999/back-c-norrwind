@@ -76,6 +76,55 @@ public static class Mappers
     }
 
 
+    public static EmployeeDTO EmployeeEntityToEmployeeDTO(Employee e)
+    {
+        var user = e.Users?.FirstOrDefault();
+        return new EmployeeDTO
+        {
+            EmployeeId = e.EmployeeId,
+            FirstName = e.FirstName ?? "",
+            LastName = e.LastName ?? "",
+            Title = e.Title,
+            TitleOfCourtesy = e.TitleOfCourtesy,
+            BirthDate = e.BirthDate,
+            HireDate = e.HireDate,
+            Address = e.Address,
+            City = e.City,
+            Region = e.Region,
+            PostalCode = e.PostalCode,
+            Country = e.Country,
+            HomePhone = e.HomePhone,
+            Extension = e.Extension,
+            Notes = e.Notes,
+            ReportsTo = e.ReportsTo,
+            Username = user?.Username,
+            Role = user?.Role,
+            HasUser = user != null
+        };
+    }
+
+    public static Employee EmployeeAddDTOToEmployeeEntity(EmployeeAddDTO dto)
+    {
+        return new Employee
+        {
+            LastName = dto.LastName,
+            FirstName = dto.FirstName,
+            Title = dto.Title,
+            TitleOfCourtesy = dto.TitleOfCourtesy,
+            BirthDate = dto.BirthDate,
+            HireDate = dto.HireDate,
+            Address = dto.Address,
+            City = dto.City,
+            Region = dto.Region,
+            PostalCode = dto.PostalCode,
+            Country = dto.Country,
+            HomePhone = dto.HomePhone,
+            Extension = dto.Extension,
+            Notes = dto.Notes,
+            ReportsTo = dto.ReportsTo
+        };
+    }
+
     public static EmployeeDTO EmployeeEntitiToEmpleyeeDTO(Employee e)
     {
         return new EmployeeDTO

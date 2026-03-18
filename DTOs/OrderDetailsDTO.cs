@@ -1,4 +1,5 @@
 using ef_nortwith.dbContext;
+using ef_nortwith.DTOs;
 
 public class OrderDetailsDTO
 {   

@@ -1,8 +1,7 @@
 namespace ef_nortwith.DTOs;
 
-public class EmployeeDTO
+public class EmployeeAddDTO
 {
-    public short EmployeeId { get; set; }
     public string LastName { get; set; } = null!;
     public string FirstName { get; set; } = null!;
     public string? Title { get; set; }
@@ -20,6 +19,6 @@ public class EmployeeDTO
     public short? ReportsTo { get; set; }
     
     public string? Username { get; set; }
+    public string? Password { get; set; }
     public string? Role { get; set; }
-    public bool HasUser { get; set; }
 }
