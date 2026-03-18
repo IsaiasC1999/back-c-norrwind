@@ -1,4 +1,5 @@
 using ef_nortwith.dbContext;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +9,7 @@ namespace ef_nortwith.Controllers;
 
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/clientes")]
 public class ClientesControllers : ControllerBase 
 {
     private readonly NorthwindContext db;
@@ -16,9 +17,10 @@ public class ClientesControllers : ControllerBase
     public ClientesControllers(NorthwindContext db)
     {
         this.db = db;
-    } 
+    }
 
-    [HttpGet("/clientes/list")]
+    [Authorize]
+    [HttpGet("list")]
     public async Task<ActionResult<ICollection<Customer>>> ObtenerClientes(){
 
         return await db.Customers.ToListAsync();
