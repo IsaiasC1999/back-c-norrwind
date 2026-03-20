@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\ef-nortwith.props" />
-</Project>
