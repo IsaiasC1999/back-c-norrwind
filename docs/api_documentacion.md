@@ -1018,3 +1018,425 @@ interface EmployeeFilter {
 4. **Roles permitidos**: Solo "admin" o "usuario" (por defecto "usuario")
 5. **Empleados sin usuario**: Se muestran igual con `hasUser: false`
 6. **Eliminación en cascada**: Al eliminar un empleado, también se eliminan sus usuarios asociados
+
+---
+
+# Módulo de Clientes
+
+## Base URL
+```
+http://localhost:5077/api/Clientes
+```
+
+---
+
+## Endpoints Disponibles
+
+### 1. Obtener todos los clientes (con filtros opcionales y paginación)
+**GET** `/api/Clientes`
+
+#### Sin filtros (primeros 10 clientes)
+```
+GET http://localhost:5077/api/Clientes
+```
+
+#### Con filtros y paginación
+```
+GET http://localhost:5077/api/Clientes?CompanyName=Alfred&City=Berlin&Country=Germany&Limit=5&Offset=0
+```
+
+#### Parámetros de Query (todos opcionales)
+| Parámetro | Tipo | Descripción | Ejemplo |
+|-----------|------|-------------|---------|
+| CompanyName | string | Filtrar por nombre de empresa | `CompanyName=Alfred` |
+| ContactName | string | Filtrar por nombre de contacto | `ContactName=Maria` |
+| City | string | Filtrar por ciudad | `City=Berlin` |
+| Country | string | Filtrar por país | `Country=Germany` |
+| Region | string | Filtrar por región | `Region=SP` |
+| PostalCode | string | Filtrar por código postal | `PostalCode=12209` |
+| Limit | number | Límite de resultados | `Limit=10` |
+| Offset | number | Desplazamiento (página) | `Offset=0` |
+
+#### Respuesta Exitosa (200 OK)
+```json
+{
+  "success": true,
+  "result": {
+    "data": [
+      {
+        "customerId": "ALFKI",
+        "companyName": "Alfreds Futterkiste",
+        "contactName": "Maria Anders",
+        "contactTitle": "Sales Representative",
+        "address": "Obere Str. 57",
+        "city": "Berlin",
+        "region": null,
+        "postalCode": "12209",
+        "country": "Germany",
+        "phone": "030-0074321",
+        "fax": "030-0076545"
+      }
+    ],
+    "total": 91
+  },
+  "error": ""
+}
+```
+
+---
+
+### 2. Obtener cliente por ID
+**GET** `/api/Clientes/{id}`
+
+```
+GET http://localhost:5077/api/Clientes/ALFKI
+```
+
+#### Respuesta Exitosa (200 OK)
+```json
+{
+  "success": true,
+  "result": {
+    "customerId": "ALFKI",
+    "companyName": "Alfreds Futterkiste",
+    "contactName": "Maria Anders",
+    "contactTitle": "Sales Representative",
+    "address": "Obere Str. 57",
+    "city": "Berlin",
+    "region": null,
+    "postalCode": "12209",
+    "country": "Germany",
+    "phone": "030-0074321",
+    "fax": "030-0076545"
+  },
+  "error": ""
+}
+```
+
+#### Respuesta Error (404 Not Found)
+```json
+{
+  "success": false,
+  "result": null,
+  "error": "El cliente no existe"
+}
+```
+
+---
+
+### 3. Obtener cliente con sus órdenes
+**GET** `/api/Clientes/{id}/ordenes`
+
+```
+GET http://localhost:5077/api/Clientes/ALFKI/ordenes
+```
+
+#### Respuesta Exitosa (200 OK)
+```json
+{
+  "success": true,
+  "result": {
+    "customerId": "ALFKI",
+    "companyName": "Alfreds Futterkiste",
+    "totalOrders": 6,
+    "orders": [
+      {
+        "orderId": 10835,
+        "orderDate": "2024-01-15",
+        "requiredDate": "2024-02-12",
+        "shippedDate": "2024-01-21",
+        "shipCountry": "Germany",
+        "employeeName": "Nancy Davolio",
+        "totalItems": 28,
+        "totalAmount": 267.50
+      },
+      {
+        "orderId": 10692,
+        "orderDate": "2023-10-03",
+        "requiredDate": "2023-10-31",
+        "shippedDate": "2023-10-13",
+        "shipCountry": "Germany",
+        "employeeName": "Andrew Fuller",
+        "totalItems": 14,
+        "totalAmount": 878.00
+      }
+    ]
+  },
+  "error": ""
+}
+```
+
+#### Respuesta Error (404 Not Found)
+```json
+{
+  "success": false,
+  "result": null,
+  "error": "El cliente no existe"
+}
+```
+
+---
+
+### 4. Crear nuevo cliente
+**POST** `/api/Clientes`
+
+```
+POST http://localhost:5077/api/Clientes
+Content-Type: application/json
+```
+
+#### Request Body
+```json
+{
+  "customerId": "TEST1",
+  "companyName": "Empresa de Prueba",
+  "contactName": "Juan Pérez",
+  "contactTitle": "Gerente de Ventas",
+  "address": "Calle Principal 123",
+  "city": "Madrid",
+  "region": "MD",
+  "postalCode": "28001",
+  "country": "España",
+  "phone": "+34 912 345 678",
+  "fax": "+34 912 345 679"
+}
+```
+
+#### Validaciones
+- `customerId`: **Obligatorio** - Exactamente 5 caracteres
+- `companyName`: **Obligatorio** - Nombre de la empresa
+
+#### Respuesta Exitosa (201 Created)
+```json
+{
+  "success": true,
+  "result": {
+    "customerId": "TEST1",
+    "companyName": "Empresa de Prueba",
+    "contactName": "Juan Pérez",
+    "contactTitle": "Gerente de Ventas",
+    "address": "Calle Principal 123",
+    "city": "Madrid",
+    "region": "MD",
+    "postalCode": "28001",
+    "country": "España",
+    "phone": "+34 912 345 678",
+    "fax": "+34 912 345 679"
+  },
+  "error": ""
+}
+```
+
+#### Respuesta Error (400 Bad Request)
+```json
+{
+  "success": false,
+  "result": null,
+  "error": "El ID del cliente debe tener exactamente 5 caracteres"
+}
+```
+
+---
+
+### 5. Actualizar cliente
+**PUT** `/api/Clientes/{id}`
+
+```
+PUT http://localhost:5077/api/Clientes/ALFKI
+Content-Type: application/json
+```
+
+#### Request Body
+```json
+{
+  "companyName": "Alfreds Futterkiste Actualizado",
+  "contactName": "Maria García",
+  "contactTitle": "Directora de Ventas",
+  "city": "Barcelona",
+  "phone": "+34 93 555 1234"
+}
+```
+
+#### Respuesta Exitosa (200 OK)
+```json
+{
+  "success": true,
+  "result": {
+    "customerId": "ALFKI",
+    "companyName": "Alfreds Futterkiste Actualizado",
+    "contactName": "Maria García",
+    "contactTitle": "Directora de Ventas",
+    "city": "Barcelona",
+    "phone": "+34 93 555 1234"
+  },
+  "error": ""
+}
+```
+
+#### Respuesta Error (400 Bad Request)
+```json
+{
+  "success": false,
+  "result": null,
+  "error": "El cliente no existe"
+}
+```
+
+---
+
+### 6. Eliminar cliente
+**DELETE** `/api/Clientes/{id}`
+
+```
+DELETE http://localhost:5077/api/Clientes/TEST1
+```
+
+#### Respuesta Exitosa (200 OK)
+```json
+{
+  "success": true,
+  "result": "Cliente eliminado correctamente",
+  "error": ""
+}
+```
+
+#### Respuesta Error (400 Bad Request)
+```json
+{
+  "success": false,
+  "result": null,
+  "error": "El cliente no existe o no se pudo eliminar"
+}
+```
+
+---
+
+## Modelos de Datos
+
+### CustomerDTO (Respuesta)
+```typescript
+interface CustomerDTO {
+  customerId: string;
+  companyName: string;
+  contactName: string | null;
+  contactTitle: string | null;
+  address: string | null;
+  city: string | null;
+  region: string | null;
+  postalCode: string | null;
+  country: string | null;
+  phone: string | null;
+  fax: string | null;
+}
+```
+
+### CustomerAddDTO (Request - POST/PUT)
+```typescript
+interface CustomerAddDTO {
+  customerId: string;
+  companyName: string;
+  contactName?: string;
+  contactTitle?: string;
+  address?: string;
+  city?: string;
+  region?: string;
+  postalCode?: string;
+  country?: string;
+  phone?: string;
+  fax?: string;
+}
+```
+
+### CustomerFilter (Query Parameters)
+```typescript
+interface CustomerFilter {
+  companyName?: string;
+  contactName?: string;
+  city?: string;
+  country?: string;
+  region?: string;
+  postalCode?: string;
+  limit?: number;
+  offset?: number;
+}
+```
+
+### CustomerOrdersDTO (Cliente con órdenes)
+```typescript
+interface CustomerOrdersDTO {
+  customerId: string;
+  companyName: string;
+  totalOrders: number;
+  orders: OrderSummaryDTO[];
+}
+```
+
+### OrderSummaryDTO (Resumen de orden)
+```typescript
+interface OrderSummaryDTO {
+  orderId: number;
+  orderDate: string | null;
+  requiredDate: string | null;
+  shippedDate: string | null;
+  shipCountry: string | null;
+  employeeName: string;
+  totalItems: number;
+  totalAmount: number | null;
+}
+```
+
+---
+
+## Ejemplos de Uso
+
+### Fetch API
+```javascript
+// Obtener todos los clientes
+const response = await fetch('http://localhost:5077/api/Clientes');
+const data = await response.json();
+
+// Filtrar y paginar
+const response = await fetch('http://localhost:5077/api/Clientes?Country=Germany&Limit=5&Offset=0');
+const data = await response.json();
+
+// Obtener cliente con órdenes
+const response = await fetch('http://localhost:5077/api/Clientes/ALFKI/ordenes');
+const data = await response.json();
+
+// Crear cliente
+const response = await fetch('http://localhost:5077/api/Clientes', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    customerId: 'TEST1',
+    companyName: 'Empresa de Prueba',
+    contactName: 'Juan Pérez'
+  })
+});
+
+// Actualizar cliente
+const response = await fetch('http://localhost:5077/api/Clientes/ALFKI', {
+  method: 'PUT',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    companyName: 'Empresa Actualizada',
+    city: 'Madrid'
+  })
+});
+
+// Eliminar cliente
+await fetch('http://localhost:5077/api/Clientes/TEST1', {
+  method: 'DELETE'
+});
+```
+
+---
+
+## Notas Importantes
+
+1. **ID de cliente**: String de exactamente 5 caracteres (ej: "ALFKI", "TEST1")
+2. **Paginación**: Usar `Limit` y `Offset` para paginar resultados
+3. **Total de resultados**: El campo `total` en la respuesta indica el total de registros
+4. **Órdenes del cliente**: Usar el endpoint `/{id}/ordenes` para ver las órdenes asociadas
+5. **Total de órdenes**: El campo `totalOrders` indica cuántas órdenes tiene el cliente
+6. **Monto total**: `totalAmount` calcula la suma de (cantidad × precio × descuento) de cada orden

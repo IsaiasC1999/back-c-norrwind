@@ -226,6 +226,83 @@ public static class Mappers
         };
     }
 
+    public static CustomerDTO CustomerEntityToCustomerDTO(Customer c)
+    {
+        return new CustomerDTO
+        {
+            CustomerId = c.CustomerId,
+            CompanyName = c.CompanyName,
+            ContactName = c.ContactName,
+            ContactTitle = c.ContactTitle,
+            Address = c.Address,
+            City = c.City,
+            Region = c.Region,
+            PostalCode = c.PostalCode,
+            Country = c.Country,
+            Phone = c.Phone,
+            Fax = c.Fax
+        };
+    }
+
+    public static List<CustomerDTO> CustomerEntitiesToCustomerDTOs(List<Customer> customers)
+    {
+        return customers.Select(c => new CustomerDTO
+        {
+            CustomerId = c.CustomerId,
+            CompanyName = c.CompanyName,
+            ContactName = c.ContactName,
+            ContactTitle = c.ContactTitle,
+            Address = c.Address,
+            City = c.City,
+            Region = c.Region,
+            PostalCode = c.PostalCode,
+            Country = c.Country,
+            Phone = c.Phone,
+            Fax = c.Fax
+        }).ToList();
+    }
+
+    public static Customer CustomerAddDTOToEntity(CustomerAddDTO dto)
+    {
+        return new Customer
+        {
+            CustomerId = dto.CustomerId,
+            CompanyName = dto.CompanyName,
+            ContactName = dto.ContactName,
+            ContactTitle = dto.ContactTitle,
+            Address = dto.Address,
+            City = dto.City,
+            Region = dto.Region,
+            PostalCode = dto.PostalCode,
+            Country = dto.Country,
+            Phone = dto.Phone,
+            Fax = dto.Fax
+        };
+    }
+
+    public static CustomerOrdersDTO CustomerEntityToCustomerOrdersDTO(Customer c)
+    {
+        var ordersList = c.Orders?.Select(o => new OrderSummaryDTO
+        {
+            OrderId = o.OrderId,
+            OrderDate = o.OrderDate,
+            RequiredDate = o.RequiredDate,
+            ShippedDate = o.ShippedDate,
+            ShipCountry = o.ShipCountry,
+            EmployeeName = (o.Employee?.FirstName ?? "") + " " + (o.Employee?.LastName ?? ""),
+            TotalItems = o.OrderDetails?.Sum(od => od.Quantity) ?? 0,
+            TotalAmount = o.OrderDetails?.Sum(od => (od.Quantity * (decimal)od.UnitPrice * (1 - (decimal)od.Discount))) ?? 0
+        }).ToList() ?? new List<OrderSummaryDTO>();
+
+        return new CustomerOrdersDTO
+        {
+            CustomerId = c.CustomerId,
+            CompanyName = c.CompanyName,
+            TotalOrders = ordersList.Count(),
+            Orders = ordersList
+        };
+    }
+
 }
 
 
