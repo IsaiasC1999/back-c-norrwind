@@ -6,7 +6,7 @@ namespace ef_nortwith.interfacez;
 public interface IRepositorioOrdenes
 {
     Task<List<Order>> GetAllOrders();
-    Task<List<Order>> GetOrders(OrderFilter filter);
+    Task<(List<Order> Orders, int TotalCount)> GetOrdersPaginated(OrderFilter filter, int offset, int limit);
     Task<Order?> GetOrderById(int id);
     Task<OrderDetail?> GetOrderDetail(int idOrder);
     Task<List<Order>> GetOrdersByDate(DateTime startDate, DateTime endDate);

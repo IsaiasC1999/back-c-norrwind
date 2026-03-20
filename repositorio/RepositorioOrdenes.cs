@@ -20,39 +20,50 @@ public class RepositorioOrdenes : IRepositorioOrdenes
             .ToListAsync();
     }
 
-    public async Task<List<Order>> GetOrders(OrderFilter filter)
+    public async Task<(List<Order> Orders, int TotalCount)> GetOrdersPaginated(OrderFilter filter, int offset, int limit)
     {
         var query = db.Orders
             .Include(e => e.Employee)
             .Include(c => c.Customer)
             .AsQueryable();
 
-        if (filter == null)
+        if (filter != null)
         {
-            return await query.ToListAsync();
+            if (filter.OrderId.HasValue)
+            {
+                query = query.Where(o => o.OrderId == filter.OrderId.Value);
+            }
+
+            if (!string.IsNullOrEmpty(filter.Cliente))
+            {
+                query = query.Where(o => o.Customer != null && o.Customer.CompanyName.Contains(filter.Cliente));
+            }
+
+            if (filter.FechaInicio.HasValue)
+            {
+                query = query.Where(o => o.OrderDate >= DateOnly.FromDateTime(filter.FechaInicio.Value));
+            }
+
+            if (filter.FechaFin.HasValue)
+            {
+                query = query.Where(o => o.OrderDate <= DateOnly.FromDateTime(filter.FechaFin.Value));
+            }
+
+            if (filter.EmpleadoId.HasValue)
+            {
+                query = query.Where(o => o.EmployeeId == filter.EmpleadoId.Value);
+            }
         }
 
-        if (!string.IsNullOrEmpty(filter.Cliente))
-        {
-            query = query.Where(o => o.Customer != null && o.Customer.CompanyName.Contains(filter.Cliente));
-        }
+        var totalCount = await query.CountAsync();
+        
+        var orders = await query
+            .OrderByDescending(o => o.OrderId)
+            .Skip(offset)
+            .Take(limit)
+            .ToListAsync();
 
-        if (filter.FechaInicio.HasValue)
-        {
-            query = query.Where(o => o.OrderDate >= DateOnly.FromDateTime(filter.FechaInicio.Value));
-        }
-
-        if (filter.FechaFin.HasValue)
-        {
-            query = query.Where(o => o.OrderDate <= DateOnly.FromDateTime(filter.FechaFin.Value));
-        }
-
-        if (filter.EmpleadoId.HasValue)
-        {
-            query = query.Where(o => o.EmployeeId == filter.EmpleadoId.Value);
-        }
-
-        return await query.ToListAsync();
+        return (orders, totalCount);
     }
 
     public async Task<Order?> GetOrderById(int id)

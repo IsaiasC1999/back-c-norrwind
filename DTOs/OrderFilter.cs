@@ -7,4 +7,5 @@ public class OrderFilter
     public string? Cliente { get; set; }
     public string? Empleado { get; set; }
     public int? EmpleadoId { get; set; }
+    public int? OrderId { get; set; }
 }

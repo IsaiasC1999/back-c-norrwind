@@ -18,26 +18,33 @@ public class OrdenesControllers : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult> GetAllOrders([FromQuery] OrderFilter? filter)
+    public async Task<ActionResult> GetAllOrders(
+        [FromQuery] OrderFilter? filter,
+        [FromQuery] int offset = 0,
+        [FromQuery] int limit = 15)
     {
-        if (filter == null || (string.IsNullOrEmpty(filter.Cliente) && 
-            !filter.FechaInicio.HasValue && !filter.FechaFin.HasValue && 
-            !filter.EmpleadoId.HasValue))
+        if (offset < 0)
         {
-            var response = await ordenesServices.GetAllOrders();
-            return Ok(response);
+            return BadRequest(new ResponseServices
+            {
+                Success = false,
+                Error = "El offset no puede ser negativo",
+                Result = null
+            });
         }
 
-        var responseFiltered = await ordenesServices.GetOrders(filter);
+        if (limit < 1 || limit > 100)
+        {
+            return BadRequest(new ResponseServices
+            {
+                Success = false,
+                Error = "El límite debe estar entre 1 y 100",
+                Result = null
+            });
+        }
 
-        if (responseFiltered.Success)
-        {
-            return Ok(responseFiltered);
-        }
-        else
-        {
-            return NotFound(responseFiltered);
-        }
+        var response = await ordenesServices.GetOrdersPaginated(filter, offset, limit);
+        return Ok(response);
     }
 
     [HttpGet("{id}")]

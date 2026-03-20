@@ -23,24 +23,23 @@ public class OrdenesServices
         };
     }
 
-    public async Task<ResponseServices> GetOrders(OrderFilter filter)
+    public async Task<PaginatedResponse<OrderListDTO>> GetOrdersPaginated(OrderFilter filter, int offset, int limit)
     {
-        var orders = await repositorioOrdenes.GetOrders(filter);
+        var (orders, totalCount) = await repositorioOrdenes.GetOrdersPaginated(filter, offset, limit);
 
-        if (orders == null || orders.Count == 0)
-        {
-            return new ResponseServices
-            {
-                Success = false,
-                Error = "No se encontraron órdenes con los filtros especificados",
-                Result = null
-            };
-        }
+        var totalPages = (int)Math.Ceiling((double)totalCount / limit);
 
-        return new ResponseServices
+        return new PaginatedResponse<OrderListDTO>
         {
             Success = true,
             Result = Mappers.OrderEntitiesToOrderListDTO(orders),
+            Pagination = new PaginationMeta
+            {
+                Offset = offset,
+                Limit = limit,
+                TotalRecords = totalCount,
+                TotalPages = totalPages
+            },
             Error = ""
         };
     }
